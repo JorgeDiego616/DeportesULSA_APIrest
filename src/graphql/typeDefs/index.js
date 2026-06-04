@@ -136,9 +136,25 @@ const typeDefs = gql`
         updateSport(sport_id: Int!, name: String, category: String): Sport!
         deleteSport(sport_id: Int!): ID!
 
-        addPlayer(name: String!, number: Int, position: String, age: Int): Player!
-        updatePlayer(player_id: Int!, name: String, number: Int, position: String, age: Int): Player!
-        deletePlayer(player_id: Int!): ID!
+        addPlayer(
+        name: String!,
+        number: Int,
+        position: String,
+        age: Int,
+        team_id: Int
+        ): Player!
+        
+        updatePlayer(
+        player_id: Int!,
+        name: String,
+        number: Int,
+        position: String,
+        age: Int
+        ): Player!
+
+        deletePlayer(
+        player_id: Int!
+        ): ID!       
 
         addTeam(name: String!, logo: String, coach: String, description: String, sport_id: Int!): Team!
         updateTeam(team_id: Int!, name: String, logo: String, coach: String, description: String): Team!

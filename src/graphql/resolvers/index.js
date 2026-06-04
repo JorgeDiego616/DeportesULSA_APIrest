@@ -84,10 +84,39 @@ const resolvers = {
             return sport_id;
         },
 
-        addPlayer: async (_, { name, number, position, age }, context) => {
+        addPlayer: async (_, {
+            name,
+            number,
+            position,
+            age,
+            team_id
+        }, context) => {
+
             checkAdmin(context);
-            const [player_id] = await db('Player').insert({ name, number, position, age });
-            return await db('Player').where({ player_id }).first();
+
+            const [player_id] = await db('Player').insert({
+                name,
+                number,
+                position,
+                age
+            });
+
+            if (team_id) {
+
+                await db('TeamPlayer').insert({
+
+                    player_id,
+                    team_id,
+                    join_date: new Date()
+
+                });
+
+            }
+
+    return await db('Player')
+        .where({ player_id })
+        .first();
+
         },
         updatePlayer: async (_, { player_id, ...rest }, context) => {
             checkAdmin(context);
