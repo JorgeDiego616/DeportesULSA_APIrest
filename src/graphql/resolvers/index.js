@@ -37,6 +37,31 @@ const resolvers = {
         forumPostsByTeam: async (_, { team_id }, context) => { checkAuth(context); return await db('ForumPost').where({ team_id }); },
 
         comments: async (_, { post_id }, context) => { checkAuth(context); return await db('Comments').where({ post_id }); },
+
+        playersByTeam: async (_, { team_id }, context) => {
+         checkAuth(context);
+
+        return await db('Player')
+        .join(
+            'TeamPlayer',
+            'Player.player_id',
+            'TeamPlayer.player_id'
+        )
+        .where('TeamPlayer.team_id', team_id)
+        .select('Player.*');},
+
+        matchesByTeam: async (_, { team_id }, context) => {
+        checkAuth(context);
+
+        return await db('MatchGame')
+        .where('home_team_id', team_id)
+        .orWhere('away_team_id', team_id);},
+
+        searchTeams: async (_, { name }, context) => {
+        checkAuth(context);
+
+        return await db('Team')
+        .where('name', 'like', `%${name}%`);},
     },
 
     Mutation: {

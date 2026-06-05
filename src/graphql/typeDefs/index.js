@@ -126,6 +126,12 @@ const typeDefs = gql`
         forumPostsByTeam(team_id: Int!): [ForumPost]
 
         comments(post_id: Int!): [Comment]
+
+        playersByTeam(team_id: Int!): [Player]
+
+        matchesByTeam(team_id: Int!): [MatchGame]
+
+        searchTeams(name: String!): [Team]
     }
 
     type Mutation {
