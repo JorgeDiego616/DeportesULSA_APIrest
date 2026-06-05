@@ -62,6 +62,22 @@ const resolvers = {
 
         return await db('Team')
         .where('name', 'like', `%${name}%`);},
+
+        teamSportView: async (_, __, context) => {
+        checkAuth(context);
+        return await db('vw_team_sport').select('*');},
+
+        teamPlayersView: async (_, __, context) => {
+        checkAuth(context);
+        return await db('vw_team_players').select('*');},
+        
+        matchResultsView: async (_, __, context) => {
+        checkAuth(context);
+        return await db('vw_match_results').select('*');},
+
+        newsAuthorView: async (_, __, context) => {
+        checkAuth(context);
+        return await db('vw_news_author').select('*');},
     },
 
     Mutation: {
@@ -260,6 +276,101 @@ const resolvers = {
             await db('Users').where({ user_id }).update({ role });
             return await db('Users').where({ user_id }).first();
         },      
+        createMatchProcedure: async (
+            _,
+            {
+                home_team_id,
+                away_team_id,
+                match_date,
+                location
+            },
+            context
+        ) => {
+
+            checkAdmin(context);
+
+            await db.raw(
+                'CALL sp_create_match(?, ?, ?, ?)',
+                [
+                    home_team_id,
+                    away_team_id,
+                    match_date,
+                    location
+                ]
+            );
+
+            return 'Partido creado correctamente';
+        },
+
+        addPlayerToTeamProcedure: async (
+            _,
+            {
+                player_id,
+                team_id
+            },
+            context
+        ) => {
+
+            checkAdmin(context);
+
+            await db.raw(
+                'CALL sp_add_player_to_team(?, ?)',
+                [
+                    player_id,
+                    team_id
+                ]
+            );
+
+            return 'Jugador agregado al equipo';
+        },
+
+        addFavoriteTeamProcedure: async (
+            _,
+            {
+                user_id,
+                team_id
+            },
+            context
+        ) => {
+
+            checkAuth(context);
+
+            await db.raw(
+                'CALL sp_add_favorite_team(?, ?)',
+                [
+                    user_id,
+                    team_id
+                ]
+            );
+
+            return 'Equipo favorito agregado';
+        },
+
+        createNewsProcedure: async (
+            _,
+            {
+                title,
+                content,
+                user_id,
+                team_id
+            },
+            context
+        ) => {
+
+            checkAuth(context);
+
+            await db.raw(
+                'CALL sp_create_news(?, ?, ?, ?)',
+                [
+                    title,
+                    content,
+                    user_id,
+                    team_id
+                ]
+            );
+
+            return 'Noticia creada correctamente';
+        },
     },
 };
 

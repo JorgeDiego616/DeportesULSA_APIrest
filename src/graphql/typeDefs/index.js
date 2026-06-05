@@ -93,6 +93,36 @@ const typeDefs = gql`
         post_id: ID
     }
 
+        type TeamSportView {
+        team_id: ID
+        team_name: String
+        sport_name: String
+        coach: String
+    }
+
+    type TeamPlayersView {
+        team_name: String
+        player_name: String
+        position: String
+        number: Int
+    }
+
+    type MatchResultsView {
+        match_id: ID
+        home_team: String
+        away_team: String
+        home_score: Int
+        away_score: Int
+        status: String
+    }
+
+    type NewsAuthorView {
+        news_id: ID
+        title: String
+        author: String
+        created_at: String
+    }
+
     type Query {
         users: [User]
         user(user_id: Int!): User
@@ -132,6 +162,14 @@ const typeDefs = gql`
         matchesByTeam(team_id: Int!): [MatchGame]
 
         searchTeams(name: String!): [Team]
+
+        teamSportView: [TeamSportView]
+
+        teamPlayersView: [TeamPlayersView]
+
+        matchResultsView: [MatchResultsView]
+
+        newsAuthorView: [NewsAuthorView]
     }
 
     type Mutation {
@@ -189,6 +227,26 @@ const typeDefs = gql`
         deleteComment(comment_id: Int!): ID!
 
         updateUserRole(user_id: Int!, role: String!): User!
+
+        createMatchProcedure(
+        home_team_id: Int!
+        away_team_id: Int!
+        match_date: String!
+        location: String!): String!
+
+        addPlayerToTeamProcedure(
+        player_id: Int!
+        team_id: Int!): String!
+
+        addFavoriteTeamProcedure(
+        user_id: Int!
+        team_id: Int!): String!
+
+    createNewsProcedure(
+        title: String!
+        content: String!
+        user_id: Int!
+        team_id: Int!): String!
     }
 `;
 
