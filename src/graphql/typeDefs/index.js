@@ -178,6 +178,8 @@ const typeDefs = gql`
         totalNews(team_id: Int!): Int
 
         totalFavorites(team_id: Int!): Int
+
+        searchPlayers(name: String!): [Player]
     }
 
     type Mutation {

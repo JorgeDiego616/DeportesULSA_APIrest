@@ -71,6 +71,13 @@ const resolvers = {
         checkAuth(context);
         return await db('vw_team_players').select('*');},
         
+        searchPlayers: async (_, { name }, context) => {
+
+        checkAuth(context);
+
+        return await db('Player')
+        .where('name', 'like', `%${name}%`);},
+
         matchResultsView: async (_, __, context) => {
         checkAuth(context);
         return await db('vw_match_results').select('*');},
