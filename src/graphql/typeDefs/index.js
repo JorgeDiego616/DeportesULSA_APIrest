@@ -170,6 +170,14 @@ const typeDefs = gql`
         matchResultsView: [MatchResultsView]
 
         newsAuthorView: [NewsAuthorView]
+
+        totalPlayers(team_id: Int!): Int
+
+        totalMatches(team_id: Int!): Int
+
+        totalNews(team_id: Int!): Int
+
+        totalFavorites(team_id: Int!): Int
     }
 
     type Mutation {

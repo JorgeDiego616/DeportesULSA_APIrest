@@ -78,6 +78,50 @@ const resolvers = {
         newsAuthorView: async (_, __, context) => {
         checkAuth(context);
         return await db('vw_news_author').select('*');},
+
+        totalPlayers: async (_, { team_id }, context) => {
+
+        checkAuth(context);
+
+        const [result] = await db.raw(
+            'SELECT fn_total_players(?) AS total',
+            [team_id]
+        );
+
+        return result[0].total;},
+
+        totalMatches: async (_, { team_id }, context) => {
+
+        checkAuth(context);
+
+        const [result] = await db.raw(
+            'SELECT fn_total_matches(?) AS total',
+            [team_id]
+        );
+
+        return result[0].total;},
+
+        totalNews: async (_, { team_id }, context) => {
+
+        checkAuth(context);
+
+        const [result] = await db.raw(
+            'SELECT fn_total_news(?) AS total',
+            [team_id]
+        );
+
+        return result[0].total;},
+
+        totalFavorites: async (_, { team_id }, context) => {
+
+        checkAuth(context);
+
+        const [result] = await db.raw(
+            'SELECT fn_total_favorites(?) AS total',
+            [team_id]
+        );
+
+        return result[0].total;},
     },
 
     Mutation: {
